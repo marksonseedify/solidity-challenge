@@ -55,4 +55,8 @@ Create a script (or a Hardhat task) to query the total amount of ETH held in the
 _You can use any library you prefer: Ethers.js, Web3.js, Web3.py, eth-brownie_
 
 ### 5) Contact
-If you want to apply to this position, please share your solution to our Solidity Challenge to the following email: jobs@exactly.finance
+- Using this repository, work on the challenge by creating a branch with your name (example: name-surname).
+
+- On your project, create a repository called 'project'. All files that you create must be inside this folder.
+
+- When you're done with your challenge, open a Merge Request with your changes.
