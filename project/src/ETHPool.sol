@@ -73,6 +73,10 @@ contract ETHPool is Ownable {
      * @dev Only the owner or other team member can update team members.
      */
 
+    function teamMembersLength() external view returns (uint256) {
+        return _teamMembers.length();
+    }
+
     /**
      * @notice Deposit ETH into the pool.
      * @dev Only ETHPool team can deposit rewards.
