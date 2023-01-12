@@ -47,7 +47,7 @@ contract ETHPool is Ownable {
         uint256 indexed weeklyDepositIndex
     );
 
-    modifier canUpdateTeam() {
+    modifier onlyOwnerOrTeam() {
         require(
             msg.sender == owner() || isTeamMember(msg.sender),
             "Pool_OWNER_TEAM_ONLY"
@@ -61,7 +61,7 @@ contract ETHPool is Ownable {
      *      As we use an EnumerableSet, we don't need to check if the
      *      `teamMember` is already in the set.
      */
-    function addTeamMember(address teamMember) external canUpdateTeam {
+    function addTeamMember(address teamMember) external onlyOwnerOrTeam {
         require(_teamMembers.add(teamMember), "MEMBER_EXISTS");
         emit TeamMemberAdded(teamMember);
     }
@@ -72,7 +72,7 @@ contract ETHPool is Ownable {
      *      As we use an EnumerableSet, we don't need to check if the
      *      `teamMember` has already been removed from the set.
      */
-    function removeTeamMember(address teamMember) external canUpdateTeam {
+    function removeTeamMember(address teamMember) external onlyOwnerOrTeam {
         require(_teamMembers.remove(teamMember), "MEMBER_NOT_FOUND");
         emit TeamMemberRemoved(teamMember);
     }

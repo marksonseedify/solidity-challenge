@@ -8,7 +8,7 @@ before(async () => {
         await ethers.getSigners();
 });
 
-describe('ETHPool.canUpdateTeam', function () {
+describe('ETHPool.onlyOwnerOrTeam', function () {
     it('addTeamMember: revert when msg.sender is not owner, nor team member', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
