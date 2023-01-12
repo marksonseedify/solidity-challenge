@@ -77,6 +77,10 @@ contract ETHPool is Ownable {
         return _teamMembers.length();
     }
 
+    function isTeamMember(address teamMember) public view returns (bool) {
+        return _teamMembers.contains(teamMember);
+    }
+
     /**
      * @notice Deposit ETH into the pool.
      * @dev Only ETHPool team can deposit rewards.
