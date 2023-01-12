@@ -19,12 +19,22 @@ contract ETHPool is Ownable {
         uint16 weeklyDepositIndex;
     }
 
-    mapping(address => uint256) public usersDeposits;
-    mapping(address => Withdrawals) public usersWithdrawals;
-
+    /*//////////////////////////////////////////////////////////////
+                            ETHPool TEAM
+    //////////////////////////////////////////////////////////////*/
+    address[] public teamMembers;
     uint256[] public weeklyRewardsDeposits;
     uint256 public totalRewardsDeposited;
 
+    /*//////////////////////////////////////////////////////////////
+                            TRACK USER'S DATA
+    //////////////////////////////////////////////////////////////*/
+    mapping(address => uint256) public usersDeposits;
+    mapping(address => Withdrawals) public usersWithdrawals;
+
+    /*//////////////////////////////////////////////////////////////
+                            EVENTS
+    //////////////////////////////////////////////////////////////*/
     event TeamMemberAdded(address indexed teamMember);
     event TeamMemberRemoved(address indexed teamMember);
 
