@@ -18,4 +18,16 @@ describe('ETHPool.canUpdateTeam', function () {
             pool.connect(charlie).addTeamMember(member1.address)
         ).to.be.revertedWith('Pool_OWNER_TEAM_ONLY');
     });
+
+    it('removeTeamMember: revert when msg.sender is not owner, nor team member', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        pool.addTeamMember(member1.address);
+
+        await expect(
+            pool.connect(charlie).removeTeamMember(member1.address)
+        ).to.be.revertedWith('Pool_OWNER_TEAM_ONLY');
+    });
 });
