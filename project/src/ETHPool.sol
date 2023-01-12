@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
+import {EnumerableSet} from "openzeppelin-contracts/utils/structs/EnumerableSet.sol";
 import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
 
 /**
@@ -11,6 +12,7 @@ import {Ownable} from "openzeppelin-contracts/access/Ownable.sol";
  */
 contract ETHPool is Ownable {
     using Address for address payable;
+    using EnumerableSet for EnumerableSet.AddressSet;
 
     struct Withdrawals {
         uint256 amount;
@@ -22,7 +24,7 @@ contract ETHPool is Ownable {
     /*//////////////////////////////////////////////////////////////
                             ETHPool TEAM
     //////////////////////////////////////////////////////////////*/
-    address[] public teamMembers;
+    EnumerableSet.AddressSet private _teamMembers;
     uint256[] public weeklyRewardsDeposits;
     uint256 public totalRewardsDeposited;
 
