@@ -20,4 +20,14 @@ describe('ETHPool.addTeamMember_existence', function () {
             'MEMBER_EXISTS'
         );
     });
+
+    it('removeTeamMember: revert if the team member does not exist', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await expect(
+            pool.removeTeamMember(member1.address)
+        ).to.be.revertedWith('MEMBER_NOT_FOUND');
+    });
 });
