@@ -4,6 +4,7 @@ import '@typechain/hardhat';
 import 'hardhat-preprocessor';
 import { HardhatUserConfig, task } from 'hardhat/config';
 import '@nomiclabs/hardhat-etherscan';
+import '@nomicfoundation/hardhat-foundry';
 
 // use .env vars
 import * as dotenv from 'dotenv';
@@ -23,12 +24,6 @@ function getRemappings() {
 
 const config: HardhatUserConfig = {
     networks: {
-        goerli: {
-            url: process.env.GOERLI_RPC_URL,
-            accounts: {
-                mnemonic: process.env.SEED,
-            },
-        },
         bsc: {
             url: 'https://bsc-dataseed.binance.org',
             accounts: {
@@ -40,10 +35,6 @@ const config: HardhatUserConfig = {
             accounts: {
                 mnemonic: process.env.SEED,
             },
-        },
-        celo: {
-            url: process.env.CELO_MAINNET,
-            accounts: { mnemonic: process.env.SEED },
         },
     },
     etherscan: {
@@ -62,7 +53,7 @@ const config: HardhatUserConfig = {
         },
     },
     paths: {
-        sources: './src', // Use ./src rather than ./contracts as Hardhat expects
+        sources: 'src', // Use ./src rather than ./contracts as Hardhat expects
         cache: './cache_hardhat', // Use a different cache for Hardhat than Foundry
     },
     // This fully resolves paths for imports in the ./lib directory for Hardhat
