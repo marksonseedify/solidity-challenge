@@ -6,6 +6,8 @@ import "forge-std/Test.sol";
 import {ETHPool} from "../../src/ETHPool.sol";
 
 contract ETHPoolTest is Test {
+    address public constant FORGE = 0xb4c79daB8f259C7Aee6E5b2Aa729821864227e84;
+
     ETHPool public pool;
 
     function setUp() public {
@@ -15,7 +17,7 @@ contract ETHPoolTest is Test {
     /*//////////////////////////////////////////////////////////////
                                  BASIC ATTRIBUTES
     //////////////////////////////////////////////////////////////*/
-    function test_() public {
-        assertTrue(true);
+    function test_owner_isForgeDeployer() public {
+        assertTrue(pool.owner() == FORGE);
     }
 }
