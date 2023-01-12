@@ -9,6 +9,8 @@ import {Address} from "openzeppelin-contracts/utils/Address.sol";
  *         the pool by the ETHPool team each week.
  */
 contract ETHPool {
+    using Address for address payable;
+
     struct Withdrawals {
         uint256 amount;
         uint256 lastWithdrawlTime;
