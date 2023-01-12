@@ -47,6 +47,27 @@ contract ETHPool is Ownable {
         uint256 indexed weeklyDepositIndex
     );
 
+    modifier canUpdateTeam(address member) {
+        require(
+            msg.sender == owner() || isTeamMember(member),
+            "ETHPool: owner or team member only"
+        );
+        _;
+    }
+
+    /**
+     * @notice Manage team members.
+     * @dev Only the owner or a team member can update team members.
+     *      As we use an EnumerableSet, we don't need to check if the
+     *      `teamMember` is already in the set.
+     */
+    function addTeamMember(
+        address teamMember
+    ) external canUpdateTeam(msg.sender) {
+        _teamMembers.add(teamMember);
+        emit TeamMemberAdded(teamMember);
+    }
+
     /**
      * @notice Manage team members.
      * @dev Only the owner or other team member can update team members.
