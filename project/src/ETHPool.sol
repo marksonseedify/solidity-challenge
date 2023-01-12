@@ -14,6 +14,12 @@ contract ETHPool is Ownable {
     using Address for address payable;
     using EnumerableSet for EnumerableSet.AddressSet;
 
+    struct SnapshotRewards {
+        uint256 timestamp;
+        uint256 amount;
+        uint256 lastTotal;
+    }
+
     struct Withdrawals {
         uint256 amount;
         uint256 lastWithdrawlTime;
@@ -26,7 +32,9 @@ contract ETHPool is Ownable {
     //////////////////////////////////////////////////////////////*/
     EnumerableSet.AddressSet private _teamMembers;
     uint256[] public weeklyRewardsDeposits;
-    uint256 public totalRewardsDeposited;
+    SnapshotRewards public snapshotRewards; // weekly rewards update
+    uint256 public totalRewards;
+    uint16 public nextWeek; // up to: (2^16 weeks) / 52 = 1,260 years
 
     /*//////////////////////////////////////////////////////////////
                             TRACK USER'S DATA
@@ -40,7 +48,11 @@ contract ETHPool is Ownable {
     event TeamMemberAdded(address indexed teamMember);
     event TeamMemberRemoved(address indexed teamMember);
 
-    event Deposit(address indexed user, uint256 indexed amount);
+    event RewardsDeposit(
+        uint256 indexed amount,
+        uint256 timestamp,
+        address indexed user
+    );
     event Withdrawl(
         address indexed user,
         uint256 indexed amount,
@@ -83,6 +95,25 @@ contract ETHPool is Ownable {
 
     function isTeamMember(address teamMember) public view returns (bool) {
         return _teamMembers.contains(teamMember);
+    }
+
+    /**
+     * @notice Deposit ETH for rewards into the pool.
+     * @dev Only ETHPool team can deposit rewards.
+     */
+    function depositRewards() external payable onlyOwnerOrTeam {
+        require(msg.value > 0, "REWARDS_ZERO");
+
+        snapshotRewards.timestamp = block.timestamp;
+        snapshotRewards.amount = msg.value;
+        snapshotRewards.lastTotal = totalRewards;
+
+        totalRewards += msg.value;
+        weeklyRewardsDeposits.push(msg.value);
+
+        ++nextWeek;
+
+        emit RewardsDeposit(msg.value, block.timestamp, msg.sender);
     }
 
     /**
