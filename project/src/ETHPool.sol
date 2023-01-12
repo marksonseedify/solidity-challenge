@@ -62,7 +62,7 @@ contract ETHPool is Ownable {
      *      `teamMember` is already in the set.
      */
     function addTeamMember(address teamMember) external canUpdateTeam {
-        _teamMembers.add(teamMember);
+        require(_teamMembers.add(teamMember), "MEMBER_EXISTS");
         emit TeamMemberAdded(teamMember);
     }
 
@@ -73,7 +73,7 @@ contract ETHPool is Ownable {
      *      `teamMember` has already been removed from the set.
      */
     function removeTeamMember(address teamMember) external canUpdateTeam {
-        _teamMembers.remove(teamMember);
+        require(_teamMembers.remove(teamMember), "MEMBER_NOT_FOUND");
         emit TeamMemberRemoved(teamMember);
     }
 
