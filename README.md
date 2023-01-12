@@ -10,9 +10,9 @@ ETHPool provides a service where people can deposit ETH and they will receive we
 
 #### Requirements
 
-- Only the team can deposit rewards.
-- Deposited rewards go to the pool of users, not to individual users.
-- Users should be able to withdraw their deposits along with their share of rewards considering the time when they deposited.
+-   Only the team can deposit rewards.
+-   Deposited rewards go to the pool of users, not to individual users.
+-   Users should be able to withdraw their deposits along with their share of rewards considering the time when they deposited.
 
 Example:
 
@@ -32,9 +32,9 @@ You can use any development tools you prefer: Hardhat, Truffle, Brownie, Solidit
 
 Useful resources:
 
-- Solidity Docs: https://docs.soliditylang.org/en/v0.8.4
-- Educational Resource: https://github.com/austintgriffith/scaffold-eth
-- Project Starter: https://github.com/abarmat/solidity-starter
+-   Solidity Docs: https://docs.soliditylang.org/en/v0.8.4
+-   Educational Resource: https://github.com/austintgriffith/scaffold-eth
+-   Project Starter: https://github.com/abarmat/solidity-starter
 
 ### 2) Write tests
 
@@ -46,7 +46,7 @@ Deploy the contract to any Ethereum testnet of your preference. Keep record of t
 
 Bonus:
 
-- Verify the contract in Etherscan
+-   Verify the contract in Etherscan
 
 ### 4) Interact with the contract
 
@@ -55,8 +55,9 @@ Create a script (or a Hardhat task) to query the total amount of ETH held in the
 _You can use any library you prefer: Ethers.js, Web3.js, Web3.py, eth-brownie_
 
 ### 5) Contact
-- Using this repository, work on the challenge by creating a branch with your name (example: name-surname).
 
-- On your project, create a repository called 'project'. All files that you create must be inside this folder.
+-   Using this repository, work on the challenge by creating a branch with your name (example: name-surname).
 
-- When you're done with your challenge, open a Merge Request with your changes.
+-   On your project, create a repository called 'project'. All files that you create must be inside this folder.
+
+-   When you're done with your challenge, open a Merge Request with your changes.
