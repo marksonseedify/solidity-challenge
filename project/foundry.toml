@@ -1,5 +1,6 @@
 [profile.default]
 src = 'src'
+test = 'test/foundry'
 out = 'out'
 libs = ['lib', '../node_modules']
 solc_version = "0.8.13"
