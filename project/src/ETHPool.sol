@@ -71,7 +71,15 @@ contract ETHPool is Ownable {
     /**
      * @notice Manage team members.
      * @dev Only the owner or other team member can update team members.
+     *      As we use an EnumerableSet, we don't need to check if the
+     *      `teamMember` has already been removed from the set.
      */
+    function removeTeamMember(
+        address teamMember
+    ) external canUpdateTeam(msg.sender) {
+        _teamMembers.remove(teamMember);
+        emit TeamMemberRemoved(teamMember);
+    }
 
     function teamMembersLength() external view returns (uint256) {
         return _teamMembers.length();
