@@ -62,7 +62,12 @@ contract ETHPool is TeamManagement, Rewards, UserData {
         }
     }
 
+    /**
+     * @notice Withdraw pending rewards.
+     * @dev For calculations simplicity, we authorize users to withdraw only
+     *      once a week.
+     */
     function withdrawPendingRewards() external {
-        _withdrawPendingRewards(pendingRewards(msg.sender), nextDepositWeek);
+        _withdraw(pendingRewards(msg.sender), nextDepositWeek);
     }
 }

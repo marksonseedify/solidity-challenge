@@ -59,12 +59,10 @@ abstract contract UserData {
     }
 
     /**
-     * @notice Withdraw pending rewards.
-     * @dev For calculations simplicity, we authorize users to withdraw only
-     *      once a week.
+     * @notice Withdraw `amount`, which can be rewards or deposit & rewards.
      */
-    function _withdrawPendingRewards(uint256 rewards, uint16 week) internal {
-        require(rewards > 0, "NO_REWARDS_FOR_USER");
+    function _withdraw(uint256 amount, uint16 week) internal {
+        require(amount > 0, "WITHDRAW_0");
         require(
             block.timestamp - usersWithdrawals[msg.sender].lastWithdrawTime >=
                 1 weeks,
@@ -73,16 +71,11 @@ abstract contract UserData {
 
         // check effects interaction pattern
         usersWithdrawals[msg.sender].withdrawWeekIndex = week;
-        usersWithdrawals[msg.sender].amount = rewards;
+        usersWithdrawals[msg.sender].amount = amount;
         usersWithdrawals[msg.sender].lastWithdrawTime = block.timestamp;
 
-        payable(msg.sender).sendValue(rewards);
+        payable(msg.sender).sendValue(amount);
 
-        emit Withdrawl(msg.sender, rewards, week);
+        emit Withdrawl(msg.sender, amount, week);
     }
-
-    /**
-     * @notice Withdraw all deposits and rewards simultaneously.
-     */
-    // re-entreency guard / check effects interaction pattern
 }

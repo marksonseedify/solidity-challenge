@@ -66,7 +66,7 @@ describe('ETHPool.withdrawPendingRewards', function () {
         assert.equal(toEther(bobWithdrawls.amount), bobPendingRewards);
     });
 
-    it('fails on: NO_REWARDS_FOR_USER', async function () {
+    it('fails on: WITHDRAW_0', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
         await pool.deployed();
@@ -77,7 +77,7 @@ describe('ETHPool.withdrawPendingRewards', function () {
 
         await expect(
             pool.connect(alice).withdrawPendingRewards()
-        ).to.be.revertedWith('NO_REWARDS_FOR_USER');
+        ).to.be.revertedWith('WITHDRAW_0');
     });
 
     it('fails on: WITHDRAW_ONCE_WEEK', async function () {
