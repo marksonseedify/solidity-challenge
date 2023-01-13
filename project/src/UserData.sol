@@ -10,20 +10,21 @@ abstract contract UserData {
         uint256 lastDeposit;
         uint256 lastestTime;
         uint256 total;
+        // uint16 depositWeekIndex;
     }
 
     struct UserWithdrawal {
-        uint256 amount;
-        uint256 lastWithdrawlTime;
         // (2^16) / 52 = 1,260 years
-        uint16 weeklyDepositIndex;
+        uint16 withdrawWeekIndex;
+        uint256 amount;
+        uint256 lastWithdrawTime;
     }
 
     /*//////////////////////////////////////////////////////////////
                             TRACK USER'S DATA
     //////////////////////////////////////////////////////////////*/
     mapping(address => UserDeposit) public usersDeposits;
-    // mapping(address => UserWithdrawal) public usersWithdrawals;
+    mapping(address => UserWithdrawal) public usersWithdrawals;
     uint256 public totalUsersDeposits;
 
     /*//////////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@ abstract contract UserData {
     event Withdrawl(
         address indexed user,
         uint256 indexed amount,
-        uint256 indexed weeklyDepositIndex
+        uint256 indexed withdrawWeekIndex
     );
 
     /**
@@ -58,8 +59,27 @@ abstract contract UserData {
     }
 
     /**
-     * @dev Withdraw pending rewards.
-    // re-entreency guard / check effects interaction pattern
+     * @notice Withdraw pending rewards.
+     * @dev For calculations simplicity, we authorize users to withdraw only
+     *      once a week.
+     */
+    function _withdrawPendingRewards(uint256 rewards, uint16 week) internal {
+        require(rewards > 0, "NO_REWARDS");
+        require(
+            block.timestamp - usersWithdrawals[msg.sender].lastWithdrawTime >=
+                1 weeks,
+            "WITHDRAW_ONCE_WEEK"
+        );
+
+        // check effects interaction pattern
+        usersWithdrawals[msg.sender].withdrawWeekIndex = week;
+        usersWithdrawals[msg.sender].amount = rewards;
+        usersWithdrawals[msg.sender].lastWithdrawTime = block.timestamp;
+
+        payable(msg.sender).sendValue(rewards);
+
+        emit Withdrawl(msg.sender, rewards, week);
+    }
 
     /**
      * @notice Withdraw all deposits and rewards simultaneously.

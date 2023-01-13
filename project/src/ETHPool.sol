@@ -56,4 +56,8 @@ contract ETHPool is TeamManagement, Rewards, UserData {
                 snapshotDeposits;
         }
     }
+
+    function withdrawPendingRewards() external {
+        _withdrawPendingRewards(pendingRewards(msg.sender), nextDepositWeek);
+    }
 }
