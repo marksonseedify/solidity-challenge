@@ -1,7 +1,10 @@
 const { assert, expect } = require('chai');
 const { ethers } = require('hardhat');
 const { toEther, toWei, getBalance } = require('../helpers/helpers');
-const { userDeposit } = require('../helpers/depositHelper');
+const {
+    userDeposit,
+    isDepositDataReseted,
+} = require('../helpers/depositHelper');
 const { pendingRewardsOf } = require('../helpers/pendingRewardsHelper');
 
 let owner, alice, bob, charlie, delta, member2, member3;
@@ -29,6 +32,7 @@ describe('ETHPool.withdrawAll', function () {
         // save users balances
         const aliceOldBalance = await getBalance(alice);
         const bobOldBalance = await getBalance(bob);
+        const oldUsersDeposits = toEther(await pool.totalUsersDeposits());
 
         await pool.depositRewards({ value: toWei('500') });
         const currentWeek = await pool.weekCounter();
@@ -72,6 +76,19 @@ describe('ETHPool.withdrawAll', function () {
         assert.equal(
             toEther(bobWithdrawls.amount),
             bobPendingRewards + bobDeposit
+        );
+
+        await isDepositDataReseted(pool, alice);
+        await isDepositDataReseted(pool, bob);
+
+        assert.equal(
+            toEther(await pool.totalUsersDeposits()),
+            oldUsersDeposits - aliceDeposit - bobDeposit
+        );
+
+        assert.equal(
+            toEther(await pool.totalClaimedRewards()),
+            alicePendingRewards + bobPendingRewards
         );
     });
 });
