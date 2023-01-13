@@ -2,17 +2,17 @@ const hre = require('hardhat');
 
 // npx hardhat run --network goerli scripts/deploy.js
 async function main() {
-    const Token = await hre.ethers.getContractFactory('Token');
-    const token = await Token.deploy();
+    const ETHPool = await hre.ethers.getContractFactory('ETHPool');
+    const ethpool = await ETHPool.deploy();
 
-    await token.deployed();
+    await ethpool.deployed();
 
-    console.log(`Deployed to ${token.address}`);
+    console.log(`Deployed to ${ethpool.address}`);
 
     await hre.run('verify:verify', {
-        address: token.address,
+        address: ethpool.address,
         // see: https://hardhat.org/hardhat-runner/plugins/nomiclabs-hardhat-etherscan#using-programmatically
-        constructorArguments: [],
+        // constructorArguments: [],
     });
 }
 
