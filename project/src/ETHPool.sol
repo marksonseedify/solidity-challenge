@@ -45,11 +45,10 @@ contract ETHPool is TeamManagement, Rewards, UserData {
       */
     function pendingRewards(
         address user
-    ) public view override returns (uint256 pendingRewards) {
-        super.pendingRewards(user);
+    ) public view override returns (uint256 rewards) {
         // Has the user deposited before the last weekly deposit from the team?
         if (usersDeposits[user].lastestTime < snapshotRewards.timestamp) {
-            pendingRewards =
+            rewards =
                 (usersDeposits[user].total * totalRewards) /
                 snapshotDeposits;
         }
@@ -70,7 +69,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
              * multiply by amount of rewards in contract before adding new
              * rewards, divide by snapshotDeposits
              */
-            pendingRewards =
+            rewards =
                 ((usersDeposits[user].total -
                     usersDeposits[user].lastDeposit) *
                     snapshotRewards.previousTotal) /
@@ -79,11 +78,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     }
 
     /**
-     * @dev Withdraw all rewards.
-     * @dev Withdraw only the last 52 weeks, to avoid over gas consumption.
-     *         We make the asumption that the user will withdraw funds at the
-     *         very least once per year.
-     */
+     * @dev Withdraw pending rewards.
     // re-entreency guard / check effects interaction pattern
 
     /**
