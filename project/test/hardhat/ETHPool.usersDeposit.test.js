@@ -41,4 +41,18 @@ describe('ETHPool.usersDeposit', function () {
             pool.connect(alice).userDeposit({ value: toWei('1') })
         ).to.revertedWith('DEPOSIT_ONCE_WEEK');
     });
+
+    it('waits 1 week before second deposit to verify Bob can deposit multiple times', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await pool.connect(bob).userDeposit({ value: toWei('1') });
+
+        await ethers.provider.send('evm_increaseTime', [604800]);
+
+        await pool.connect(bob).userDeposit({ value: toWei('1') });
+
+        assert.equal(toEther(await pool.totalUsersDeposits()), 2);
+    });
 });
