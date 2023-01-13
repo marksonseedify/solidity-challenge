@@ -47,6 +47,35 @@ contract ETHPool is TeamManagement, Rewards, UserData {
         address user
     ) public view override returns (uint256 pendingRewards) {
         super.pendingRewards(user);
+        // Has the user deposited before the last weekly deposit from the team?
+        if (usersDeposits[user].lastestTime < snapshotRewards.timestamp) {
+            pendingRewards =
+                (usersDeposits[user].total * totalRewards) /
+                snapshotDeposits;
+        }
+        /**
+         * @dev With the deposit limitation of once a week this part is not
+         * subject to drain attacks.
+         * Though if we wanted to let users deposit new amounts before new
+         * rewards are deposited we would need implement a more complex
+         * calculation on this part of the if statement.
+         *
+         * We could even set the limit on the rewards withdraw. User can
+         * withdraw their deposit any time, but there rewards only once a week.
+         * This would allow users to deposit ETH at any time without being
+         * able to drain the contract.
+         */
+        else {
+            /** @dev Deduct last deposit of user from total deposit by user,
+             * multiply by amount of rewards in contract before adding new
+             * rewards, divide by snapshotDeposits
+             */
+            pendingRewards =
+                ((usersDeposits[user].total -
+                    usersDeposits[user].lastestDeposit) *
+                    snapshotRewards.previousTotal) /
+                snapshotDeposits;
+        }
     }
 
     /**
