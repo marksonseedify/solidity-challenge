@@ -9,7 +9,7 @@ before(async () => {
         await ethers.getSigners();
 });
 
-describe('ETHPool.depositRewards', function () {
+describe('ETHPool.pendingRewards', function () {
     it('it computes rewards for Alice, Bob, Charlie & Delta', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
@@ -32,6 +32,8 @@ describe('ETHPool.depositRewards', function () {
         // more ETH deposited
         assert.equal(toEther(await pool.totalUsersDeposits()), 800);
 
+        // jump 1 week later to avoid 'WEEKLY_REWARDS_DEPOSIT' revert
+        await ethers.provider.send('evm_increaseTime', [604800]);
         await pool.depositRewards({ value: toWei('1000') });
 
         const snapshotRewards = await pool.snapshotRewards();
