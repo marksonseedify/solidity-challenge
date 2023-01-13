@@ -64,7 +64,7 @@ abstract contract UserData {
      *      once a week.
      */
     function _withdrawPendingRewards(uint256 rewards, uint16 week) internal {
-        require(rewards > 0, "NO_REWARDS");
+        require(rewards > 0, "NO_REWARDS_FOR_USER");
         require(
             block.timestamp - usersWithdrawals[msg.sender].lastWithdrawTime >=
                 1 weeks,
