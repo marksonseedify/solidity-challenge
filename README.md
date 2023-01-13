@@ -65,3 +65,5 @@ _You can use any library you prefer: Ethers.js, Web3.js, Web3.py, eth-brownie_
 ## Results
 
 -   First version deployed on Goerli and verified [here](https://goerli.etherscan.io/address/0xF9C1b8AC4873117ABDB5e18d25B3f66CE8282397#code)
+-   Second and final version on Goerli (https://goerli.etherscan.io/address/0x7aC2a52959D780d6ADBE970f3e0B36F1642Ca470#code)
+-   2 JS scripts in `project/scripts`: `deploy`, `verify` and `ethBalanceInPool`
