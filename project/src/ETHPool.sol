@@ -13,6 +13,7 @@ import {UserData} from "./UserData.sol";
 contract ETHPool is TeamManagement, Rewards, UserData {
     function depositRewards() public payable onlyOwnerOrTeam {
         require(totalUsersDeposits > 0, "NO_USERS_DEPOSITS");
+        // require(, "ONLY_WEEKLY_REWARDS");
 
         _depositRewards();
 
@@ -69,5 +70,15 @@ contract ETHPool is TeamManagement, Rewards, UserData {
      */
     function withdrawPendingRewards() external {
         _withdraw(pendingRewards(msg.sender), nextDepositWeek);
+    }
+
+    /**
+     * @notice Withdraw all deposits and rewards simultaneously.
+     */
+    function withdrawAll() external {
+        _withdraw(
+            pendingRewards(msg.sender) + usersDeposits[msg.sender].total,
+            nextDepositWeek
+        );
     }
 }
