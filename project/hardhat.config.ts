@@ -5,6 +5,7 @@ import 'hardhat-preprocessor';
 import { HardhatUserConfig, task } from 'hardhat/config';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomicfoundation/hardhat-foundry';
+import 'solidity-coverage';
 
 // use .env vars
 import * as dotenv from 'dotenv';
