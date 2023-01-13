@@ -15,12 +15,7 @@ describe('ETHPool.depositRewards', function () {
         const pool = await ETHPool.deploy();
         await pool.deployed();
 
-        console.log(
-            'owner.balance: ',
-            ethers.utils.formatEther(
-                await ethers.provider.getBalance(owner.address)
-            )
-        );
+        await pool.connect(alice).userDeposit({ value: toWei('100') });
 
         await expect(pool.depositRewards({ value: toWei('10') })).to.emit(
             pool,
@@ -37,7 +32,7 @@ describe('ETHPool.depositRewards', function () {
         assert.equal(toEther(snapshotRewards.amount), 10);
         assert.equal(toEther(snapshotRewards.previousTotal), 0);
 
-        assert.equal(snapshotDeposits, 0);
+        assert.equal(snapshotDeposits, 100);
 
         assert.equal(toEther(await pool.totalRewards()), 10);
         assert.equal(
@@ -46,6 +41,16 @@ describe('ETHPool.depositRewards', function () {
         );
 
         assert.equal(nextDepositWeek, 1);
+    });
+
+    it('fails on: NO_USER_DEPOSITS', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await expect(pool.depositRewards({ value: '100' })).to.be.revertedWith(
+            'NO_USER_DEPOSITS'
+        );
     });
 
     it.skip('reverts on Pool_OWNER_TEAM_ONLY', async function () {});
