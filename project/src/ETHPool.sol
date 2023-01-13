@@ -11,10 +11,11 @@ import {UserData} from "./UserData.sol";
  *         the pool by the ETHPool team each week.
  */
 contract ETHPool is TeamManagement, Rewards, UserData {
-    function depositRewards() public payable override onlyOwnerOrTeam {
+    function depositRewards() public payable onlyOwnerOrTeam {
         require(totalUsersDeposits > 0, "NO_USER_DEPOSITS");
 
-        super.depositRewards();
+        _depositRewards();
+
         snapshotDeposits = totalUsersDeposits;
     }
 

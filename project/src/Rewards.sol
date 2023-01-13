@@ -32,7 +32,7 @@ abstract contract Rewards {
      * @notice Deposit ETH for rewards into the pool.
      * @dev Only ETHPool team can deposit rewards.
      */
-    function depositRewards() public payable virtual {
+    function _depositRewards() internal {
         require(msg.value > 0, "REWARDS_ZERO");
 
         snapshotRewards.timestamp = block.timestamp;
