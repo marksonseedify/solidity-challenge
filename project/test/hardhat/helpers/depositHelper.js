@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat');
+const { assert } = require('chai');
 const { toEther, toWei } = require('./helpers');
 
 async function userDeposit(pool, user, amount) {
