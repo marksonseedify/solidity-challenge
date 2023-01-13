@@ -13,7 +13,11 @@ import {UserData} from "./UserData.sol";
 contract ETHPool is TeamManagement, Rewards, UserData {
     function depositRewards() public payable onlyOwnerOrTeam {
         require(totalUsersDeposits > 0, "NO_USERS_DEPOSITS");
-        // require(, "ONLY_WEEKLY_REWARDS");
+        // deposit rewards only once a week using snapshotRewards.timestamp
+        require(
+            block.timestamp - snapshotRewards.timestamp >= 1 weeks,
+            "WEEKLY_REWARDS_DEPOSIT"
+        );
 
         _depositRewards();
 
