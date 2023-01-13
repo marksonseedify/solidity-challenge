@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+import {Address} from "openzeppelin-contracts/utils/Address.sol";
+
 abstract contract UserData {
+    using Address for address payable;
+
     struct UserDeposit {
         uint256 lastDeposit;
         uint256 lastestTime;

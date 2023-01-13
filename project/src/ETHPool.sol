@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import {Address} from "openzeppelin-contracts/utils/Address.sol";
-
 import {Rewards} from "./Rewards.sol";
 import {TeamManagement} from "./TeamManagement.sol";
 import {UserData} from "./UserData.sol";
@@ -13,8 +11,6 @@ import {UserData} from "./UserData.sol";
  *         the pool by the ETHPool team each week.
  */
 contract ETHPool is TeamManagement, Rewards, UserData {
-    using Address for address payable;
-
     function depositRewards() public payable override onlyOwnerOrTeam {
         super.depositRewards();
         snapshotDeposits = totalUsersDeposits;
