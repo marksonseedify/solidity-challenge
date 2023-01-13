@@ -63,7 +63,11 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     }
 
     function withdrawPendingRewards() external {
-        _withdraw(pendingRewards(msg.sender), weekCounter);
+        uint256 rewards = pendingRewards(msg.sender);
+
+        // totalRewards -= rewards; // this causes an issue, source of bug not found
+        totalClaimedRewards += rewards;
+        _withdraw(rewards, weekCounter);
     }
 
     /**
