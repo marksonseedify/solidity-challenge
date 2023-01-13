@@ -26,6 +26,8 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     function pendingRewards(
         address user
     ) public view override returns (uint256 rewards) {
+        require(snapshotDeposits > 0, "NO_USER_DEPOSITS");
+
         // Has the user deposited before the last weekly deposit from the team?
         if (usersDeposits[user].lastestTime < snapshotRewards.timestamp) {
             rewards =
