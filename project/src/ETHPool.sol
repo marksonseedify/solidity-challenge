@@ -67,7 +67,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     }
 
     function withdrawPendingRewards() external {
-        _withdraw(pendingRewards(msg.sender), nextDepositWeek);
+        _withdraw(pendingRewards(msg.sender), weekCounter);
     }
 
     /**
@@ -76,7 +76,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     function withdrawAll() external {
         _withdraw(
             pendingRewards(msg.sender) + usersDeposits[msg.sender].total,
-            nextDepositWeek
+            weekCounter
         );
     }
 }

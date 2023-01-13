@@ -22,7 +22,7 @@ describe('ETHPool.withdrawPendingRewards', function () {
         await pool.connect(bob).userDeposit({ value: bobDeposit });
 
         await pool.depositRewards({ value: toWei('500') });
-        const currentWeek = await pool.nextDepositWeek();
+        const currentWeek = await pool.weekCounter();
 
         assert.equal(toEther(await pool.pendingRewards(alice.address)), 125);
         assert.equal(toEther(await pool.pendingRewards(bob.address)), 375);

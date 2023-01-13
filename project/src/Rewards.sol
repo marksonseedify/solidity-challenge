@@ -20,7 +20,7 @@ abstract contract Rewards {
     // all used on weekly rewards deposits
     SnapshotReward public snapshotRewards;
     uint256 public snapshotDeposits;
-    uint16 public nextDepositWeek; // up to: (2^16 weeks) / 52 = 1,260 years
+    uint16 public weekCounter; // up to: (2^16 weeks) / 52 = 1,260 years
 
     event RewardsDeposit(
         uint256 indexed amount,
@@ -42,7 +42,7 @@ abstract contract Rewards {
         totalRewards += msg.value;
         weeklyRewardsDeposits.push(msg.value);
 
-        ++nextDepositWeek;
+        ++weekCounter;
 
         emit RewardsDeposit(msg.value, block.timestamp, msg.sender);
     }

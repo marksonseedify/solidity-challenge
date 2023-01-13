@@ -25,7 +25,7 @@ describe('ETHPool.depositRewards', function () {
         const snapshotRewards = await pool.snapshotRewards();
         const snapshotDeposits = toEther(await pool.snapshotDeposits());
 
-        const nextDepositWeek = await pool.nextDepositWeek();
+        const weekCounter = await pool.weekCounter();
 
         // verify pool.snapshotRewards parameters
         expect(snapshotRewards.timestamp).to.not.equal(0);
@@ -36,11 +36,11 @@ describe('ETHPool.depositRewards', function () {
 
         assert.equal(toEther(await pool.totalRewards()), 10);
         assert.equal(
-            toEther(await pool.weeklyRewardsDeposits(nextDepositWeek - 1)),
+            toEther(await pool.weeklyRewardsDeposits(weekCounter - 1)),
             10
         );
 
-        assert.equal(nextDepositWeek, 1);
+        assert.equal(weekCounter, 1);
     });
 
     it('fails on: NO_USERS_DEPOSITS', async function () {
