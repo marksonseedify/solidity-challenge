@@ -53,6 +53,20 @@ describe('ETHPool.depositRewards', function () {
         );
     });
 
+    it('fails on: WEEKLY_REWARDS_DEPOSIT', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await pool.connect(alice).userDeposit({ value: '100' });
+
+        await pool.depositRewards({ value: '10' });
+
+        await expect(pool.depositRewards({ value: '10' })).to.be.revertedWith(
+            'WEEKLY_REWARDS_DEPOSIT'
+        );
+    });
+
     it.skip('reverts on Pool_OWNER_TEAM_ONLY', async function () {});
 
     it.skip('reverts on REWARDS_ZERO', async function () {});
