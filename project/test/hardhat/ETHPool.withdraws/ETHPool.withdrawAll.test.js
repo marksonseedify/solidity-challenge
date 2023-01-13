@@ -2,6 +2,7 @@ const { assert, expect } = require('chai');
 const { ethers } = require('hardhat');
 const { toEther, toWei, getBalance } = require('../helpers/helpers');
 const { userDeposit } = require('../helpers/depositHelper');
+const { pendingRewardsOf } = require('../helpers/pendingRewardsHelper');
 
 let owner, alice, bob, charlie, delta, member2, member3;
 let pool;
@@ -32,13 +33,8 @@ describe('ETHPool.withdrawAll', function () {
         await pool.depositRewards({ value: toWei('500') });
         const currentWeek = await pool.weekCounter();
 
-        const alicePendingRewards = toEther(
-            await pool.pendingRewards(alice.address)
-        );
-        const bobPendingRewards = toEther(
-            await pool.pendingRewards(bob.address)
-        );
-
+        const alicePendingRewards = await pendingRewardsOf(pool, alice);
+        const bobPendingRewards = await pendingRewardsOf(pool, bob);
         // save users rewards
         assert.equal(alicePendingRewards, 125);
         assert.equal(bobPendingRewards, 375);
