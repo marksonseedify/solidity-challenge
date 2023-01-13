@@ -9,7 +9,7 @@ before(async () => {
         await ethers.getSigners();
 });
 
-describe('ETHPool.withdrawAll', function () {
+describe('ETHPool.withdrawPendingRewards', function () {
     it('it verifies withdraw data, including UserWithdrawal(...), when Alice & Bob take tehir rewards', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
@@ -21,7 +21,7 @@ describe('ETHPool.withdrawAll', function () {
         await pool.connect(alice).userDeposit({ value: aliceDeposit });
         await pool.connect(bob).userDeposit({ value: bobDeposit });
 
-        await pool.depositRewards({ value: toWei('400') });
+        await pool.depositRewards({ value: toWei('500') });
 
         assert.equal(toEther(await pool.pendingRewards(alice.address)), 125);
         assert.equal(toEther(await pool.pendingRewards(bob.address)), 375);
