@@ -43,13 +43,13 @@ describe('ETHPool.depositRewards', function () {
         assert.equal(nextDepositWeek, 1);
     });
 
-    it('fails on: NO_USER_DEPOSITS', async function () {
+    it('fails on: NO_USERS_DEPOSITS', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
         await pool.deployed();
 
         await expect(pool.depositRewards({ value: '100' })).to.be.revertedWith(
-            'NO_USER_DEPOSITS'
+            'NO_USERS_DEPOSITS'
         );
     });
 

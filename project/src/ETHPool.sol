@@ -12,7 +12,7 @@ import {UserData} from "./UserData.sol";
  */
 contract ETHPool is TeamManagement, Rewards, UserData {
     function depositRewards() public payable onlyOwnerOrTeam {
-        require(totalUsersDeposits > 0, "NO_USER_DEPOSITS");
+        require(totalUsersDeposits > 0, "NO_USERS_DEPOSITS");
 
         _depositRewards();
 
@@ -29,7 +29,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     function pendingRewards(
         address user
     ) public view override returns (uint256 rewards) {
-        require(snapshotDeposits > 0, "NO_USER_DEPOSITS");
+        require(snapshotDeposits > 0, "NO_USERS_DEPOSITS");
 
         // Has the user deposited before the last weekly deposit from the team?
         if (usersDeposits[user].lastestTime < snapshotRewards.timestamp) {

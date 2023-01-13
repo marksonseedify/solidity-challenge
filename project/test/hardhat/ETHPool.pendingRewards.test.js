@@ -48,7 +48,7 @@ describe('ETHPool.depositRewards', function () {
         assert.equal(toEther(await pool.pendingRewards(delta.address)), 0);
     });
 
-    it('fails on: NO_USER_DEPOSITS', async function () {
+    it('fails on: NO_USERS_DEPOSITS', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
         await pool.deployed();
@@ -56,7 +56,7 @@ describe('ETHPool.depositRewards', function () {
         await pool.connect(alice).userDeposit({ value: toWei('100') });
 
         await expect(pool.pendingRewards(alice.address)).to.be.revertedWith(
-            'NO_USER_DEPOSITS'
+            'NO_USERS_DEPOSITS'
         );
     });
 });
