@@ -3,18 +3,21 @@ const { ethers } = require('hardhat');
 const { toEther, toWei } = require('../helpers/helpers');
 
 let owner, alice, bob, charlie, delta, member2, member3;
+let pool;
 
 before(async () => {
     [owner, alice, bob, charlie, delta, member2, member3] =
         await ethers.getSigners();
 });
 
+beforeEach(async () => {
+    const ETHPool = await ethers.getContractFactory('ETHPool');
+    pool = await ETHPool.deploy();
+    await pool.deployed();
+});
+
 describe('ETHPool.withdrawPendingRewards', function () {
     it('it verifies withdraw data, including UserWithdrawal(...), when Alice & Bob take tehir rewards', async function () {
-        const ETHPool = await ethers.getContractFactory('ETHPool');
-        const pool = await ETHPool.deploy();
-        await pool.deployed();
-
         const aliceDeposit = toWei('100');
         const bobDeposit = toWei('300');
 
@@ -67,10 +70,6 @@ describe('ETHPool.withdrawPendingRewards', function () {
     });
 
     it('fails on: WITHDRAW_0', async function () {
-        const ETHPool = await ethers.getContractFactory('ETHPool');
-        const pool = await ETHPool.deploy();
-        await pool.deployed();
-
         await pool.connect(bob).userDeposit({ value: toWei('100') });
 
         await pool.depositRewards({ value: toWei('500') });
@@ -81,10 +80,6 @@ describe('ETHPool.withdrawPendingRewards', function () {
     });
 
     it('fails on: WITHDRAW_ONCE_WEEK', async function () {
-        const ETHPool = await ethers.getContractFactory('ETHPool');
-        const pool = await ETHPool.deploy();
-        await pool.deployed();
-
         await pool.connect(alice).userDeposit({ value: toWei('100') });
 
         await pool.depositRewards({ value: toWei('500') });

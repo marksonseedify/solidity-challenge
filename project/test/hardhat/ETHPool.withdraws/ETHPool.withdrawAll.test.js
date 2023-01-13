@@ -3,21 +3,21 @@ const { ethers } = require('hardhat');
 const { toEther, toWei } = require('../helpers/helpers');
 
 let owner, alice, bob, charlie, delta, member2, member3;
+let pool;
 
 before(async () => {
     [owner, alice, bob, charlie, delta, member2, member3] =
         await ethers.getSigners();
 });
 
+beforeEach(async () => {
+    const ETHPool = await ethers.getContractFactory('ETHPool');
+    pool = await ETHPool.deploy();
+    await pool.deployed();
+});
+
 describe('ETHPool.withdrawAll', function () {
     it('it verifies withdraw data, including UserWithdrawal(...), when Alice & Bob withdraw ALL', async function () {
-        const ETHPool = await ethers.getContractFactory('ETHPool');
-        const pool = await ETHPool.deploy();
-        await pool.deployed();
-
-        const aliceDeposit = toWei('100');
-        const bobDeposit = toWei('300');
-
         await pool.connect(alice).userDeposit({ value: aliceDeposit });
         await pool.connect(bob).userDeposit({ value: bobDeposit });
 
