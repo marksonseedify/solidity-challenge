@@ -33,7 +33,7 @@ abstract contract Rewards {
      * @dev Only ETHPool team can deposit rewards.
      */
     function _depositRewards() internal {
-        require(msg.value > 0, "REWARDS_ZERO");
+        require(msg.value > 0, "DEPOSIT_REWARDS_ZERO");
 
         snapshotRewards.timestamp = block.timestamp;
         snapshotRewards.amount = msg.value;

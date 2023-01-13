@@ -79,5 +79,15 @@ describe('ETHPool.depositRewards', function () {
         ).to.be.revertedWith('Pool_OWNER_TEAM_ONLY');
     });
 
-    it.skip('reverts on REWARDS_ZERO', async function () {});
+    it('reverts on DEPOSIT_REWARDS_ZERO', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await pool.connect(alice).userDeposit({ value: '100' });
+
+        await expect(pool.depositRewards({ value: '0' })).to.be.revertedWith(
+            'DEPOSIT_REWARDS_ZERO'
+        );
+    });
 });
