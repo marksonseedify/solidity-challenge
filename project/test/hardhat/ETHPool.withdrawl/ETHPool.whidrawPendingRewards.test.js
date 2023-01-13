@@ -34,9 +34,9 @@ describe('ETHPool.withdrawPendingRewards', function () {
         const alicePendingRewards = await pool.pendingRewards(alice.address);
         const bobPendingRewards = await pool.pendingRewards(bob.address);
 
-        await withdrawAll.connect(alice).withdrawAll();
+        await withdrawAll.connect(alice).withdrawPendingRewards();
         // verify event emittance and its parameters
-        await expect(withdrawRewards.connect(bob).withdrawAll())
+        await expect(withdrawRewards.connect(bob).withdrawPendingRewards())
             .to.emit(pool, 'Withdrawl')
             .withArgs(bob.address, bobPendingRewards, 0);
 
