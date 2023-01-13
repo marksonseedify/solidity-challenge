@@ -12,6 +12,8 @@ import {UserData} from "./UserData.sol";
  */
 contract ETHPool is TeamManagement, Rewards, UserData {
     function depositRewards() public payable override onlyOwnerOrTeam {
+        require(totalUsersDeposits > 0, "NO_USER_DEPOSITS");
+
         super.depositRewards();
         snapshotDeposits = totalUsersDeposits;
     }
