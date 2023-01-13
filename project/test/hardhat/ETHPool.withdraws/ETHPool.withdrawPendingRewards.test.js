@@ -22,31 +22,47 @@ describe('ETHPool.withdrawPendingRewards', function () {
         await pool.connect(bob).userDeposit({ value: bobDeposit });
 
         await pool.depositRewards({ value: toWei('500') });
+        const currentWeek = await pool.nextDepositWeek();
 
         assert.equal(toEther(await pool.pendingRewards(alice.address)), 125);
         assert.equal(toEther(await pool.pendingRewards(bob.address)), 375);
 
         // save balances and rewards before withdrawl
-        const aliceOldBalance = await ethers.provider.getBalance(
-            alice.address
+        const aliceOldBalance = toEther(
+            await ethers.provider.getBalance(alice.address)
         );
-        const bobOldBalance = await ethers.provider.getBalance(bob.address);
-        const alicePendingRewards = await pool.pendingRewards(alice.address);
-        const bobPendingRewards = await pool.pendingRewards(bob.address);
+        const bobOldBalance = toEther(
+            await ethers.provider.getBalance(bob.address)
+        );
+        const alicePendingRewards = toEther(
+            await pool.pendingRewards(alice.address)
+        );
+        const bobPendingRewards = toEther(
+            await pool.pendingRewards(bob.address)
+        );
 
-        await withdrawAll.connect(alice).withdrawPendingRewards();
+        await pool.connect(alice).withdrawPendingRewards();
         // verify event emittance and its parameters
-        await expect(withdrawRewards.connect(bob).withdrawPendingRewards())
+        await expect(pool.connect(bob).withdrawPendingRewards())
             .to.emit(pool, 'Withdrawl')
-            .withArgs(bob.address, bobPendingRewards, 0);
+            .withArgs(bob.address, toWei(bobPendingRewards.toString()), 1);
 
+        // verify balances after withdrawl: equal to old blance + rewards
         assert.equal(
-            await ethers.provider.getBalance(alice.address),
+            toEther(await ethers.provider.getBalance(alice.address)),
             aliceOldBalance + alicePendingRewards
         );
         assert.equal(
-            await ethers.provider.getBalance(bob.address),
+            toEther(await ethers.provider.getBalance(bob.address)),
             bobOldBalance + bobPendingRewards
         );
+
+        const aliceWithdrawls = await pool.usersWithdrawals(alice.address);
+        const bobWithdrawls = await pool.usersWithdrawals(bob.address);
+
+        assert.equal(aliceWithdrawls.withdrawWeekIndex, currentWeek);
+        assert.equal(bobWithdrawls.withdrawWeekIndex, currentWeek);
+        assert.equal(toEther(aliceWithdrawls.amount), alicePendingRewards);
+        assert.equal(toEther(bobWithdrawls.amount), bobPendingRewards);
     });
 });
