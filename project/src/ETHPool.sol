@@ -72,7 +72,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
              */
             pendingRewards =
                 ((usersDeposits[user].total -
-                    usersDeposits[user].lastestDeposit) *
+                    usersDeposits[user].lastDeposit) *
                     snapshotRewards.previousTotal) /
                 snapshotDeposits;
         }

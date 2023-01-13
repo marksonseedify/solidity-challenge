@@ -5,7 +5,7 @@ abstract contract Rewards {
     struct SnapshotReward {
         uint256 timestamp;
         uint256 amount;
-        uint256 lastTotal;
+        uint256 previousTotal;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ abstract contract Rewards {
 
         snapshotRewards.timestamp = block.timestamp;
         snapshotRewards.amount = msg.value;
-        snapshotRewards.lastTotal = totalRewards;
+        snapshotRewards.previousTotal = totalRewards;
 
         totalRewards += msg.value;
         weeklyRewardsDeposits.push(msg.value);

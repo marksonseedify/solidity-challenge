@@ -35,7 +35,7 @@ describe('ETHPool.depositRewards', function () {
         // verify pool.snapshotRewards parameters
         expect(snapshotRewards.timestamp).to.not.equal(0);
         assert.equal(toEther(snapshotRewards.amount), 10);
-        assert.equal(toEther(snapshotRewards.lastTotal), 0);
+        assert.equal(toEther(snapshotRewards.previousTotal), 0);
 
         assert.equal(snapshotDeposits, 0);
 
