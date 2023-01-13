@@ -14,7 +14,7 @@ contract ETHPool is Ownable {
     using Address for address payable;
     using EnumerableSet for EnumerableSet.AddressSet;
 
-    struct SnapshotRewards {
+    struct SnapshotReward {
         uint256 timestamp;
         uint256 amount;
         uint256 lastTotal;
@@ -38,8 +38,14 @@ contract ETHPool is Ownable {
     //////////////////////////////////////////////////////////////*/
     EnumerableSet.AddressSet private _teamMembers;
     uint256[] public weeklyRewardsDeposits;
-    SnapshotRewards public snapshotRewards; // weekly rewards update
     uint256 public totalRewards;
+
+    /*//////////////////////////////////////////////////////////////
+                            SNAPSHOT
+    //////////////////////////////////////////////////////////////*/
+    // all used on weekly rewards deposits
+    SnapshotReward public snapshotRewards;
+    uint256 public snapshotDeposits;
     uint16 public nextWeek; // up to: (2^16 weeks) / 52 = 1,260 years
 
     /*//////////////////////////////////////////////////////////////
@@ -116,6 +122,8 @@ contract ETHPool is Ownable {
         snapshotRewards.amount = msg.value;
         snapshotRewards.lastTotal = totalRewards;
 
+        snapshotDeposits = totalUsersDeposits;
+
         totalRewards += msg.value;
         weeklyRewardsDeposits.push(msg.value);
 
@@ -144,6 +152,17 @@ contract ETHPool is Ownable {
 
         emit UsersDeposit(msg.sender, msg.value);
     }
+
+    /**
+      * @notice Compute the pending rewards for a user taking into account:
+      *         - if they deposited before the last team weekly deposit
+                  timestamp 
+                - how much shares they have in the pool based on what they
+                  deposited
+      */
+    function pendingRewards(
+        address user
+    ) public view returns (uint256 pendingRewards) {}
 
     /**
      * @notice Deposit ETH into the pool.
