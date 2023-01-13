@@ -43,7 +43,7 @@ abstract contract UserData {
      *      once a week.
      */
     function userDeposit() external payable {
-        require(msg.value > 0, "DEPOSIT_ZERO");
+        require(msg.value > 0, "USER_DEPOSIT_ZERO");
         require(
             block.timestamp - usersDeposits[msg.sender].lastestTime >= 1 weeks,
             "DEPOSIT_ONCE_WEEK"
