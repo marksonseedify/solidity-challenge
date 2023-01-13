@@ -65,4 +65,18 @@ describe('ETHPool.withdrawPendingRewards', function () {
         assert.equal(toEther(aliceWithdrawls.amount), alicePendingRewards);
         assert.equal(toEther(bobWithdrawls.amount), bobPendingRewards);
     });
+
+    it('fails on: NO_REWARDS_FOR_USER', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await pool.connect(bob).userDeposit({ value: toWei('100') });
+
+        await pool.depositRewards({ value: toWei('500') });
+
+        await expect(
+            pool.connect(alice).withdrawPendingRewards()
+        ).to.be.revertedWith('NO_REWARDS_FOR_USER');
+    });
 });
