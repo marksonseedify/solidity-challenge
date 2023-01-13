@@ -27,4 +27,18 @@ describe('ETHPool.usersDeposit', function () {
 
         assert.equal(toEther(await pool.totalUsersDeposits()), 1);
     });
+
+    it.skip('fails on: DEPOSIT_ZERO', async function () {});
+
+    it('fails on: DEPOSIT_ONCE_WEEK', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        pool.connect(alice).userDeposit({ value: toWei('1') });
+
+        await expect(
+            pool.connect(alice).userDeposit({ value: toWei('1') })
+        ).to.revertedWith('DEPOSIT_ONCE_WEEK');
+    });
 });
