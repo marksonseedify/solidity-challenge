@@ -1,6 +1,11 @@
 const { assert, expect } = require('chai');
 const { ethers } = require('hardhat');
-const { toEther, toWei } = require('../helpers/helpers');
+const { toEther, toWei, getBalance } = require('../helpers/helpers');
+const {
+    userDeposit,
+    isDepositDataReseted,
+} = require('../helpers/depositHelper');
+const { pendingRewardsOf } = require('../helpers/pendingRewardsHelper');
 
 let owner, alice, bob, charlie, delta, member2, member3;
 let pool;
@@ -18,31 +23,24 @@ beforeEach(async () => {
 
 describe('ETHPool.withdrawPendingRewards', function () {
     it('it verifies withdraw data, including UserWithdrawal(...), when Alice & Bob take tehir rewards', async function () {
-        const aliceDeposit = toWei('100');
-        const bobDeposit = toWei('300');
+        const aliceDeposit = 100;
+        const bobDeposit = 300;
 
-        await pool.connect(alice).userDeposit({ value: aliceDeposit });
-        await pool.connect(bob).userDeposit({ value: bobDeposit });
+        await userDeposit(pool, alice, aliceDeposit);
+        await userDeposit(pool, bob, bobDeposit);
+
+        // save users balances
+        const aliceOldBalance = await getBalance(alice);
+        const bobOldBalance = await getBalance(bob);
 
         await pool.depositRewards({ value: toWei('500') });
         const currentWeek = await pool.weekCounter();
 
-        assert.equal(toEther(await pool.pendingRewards(alice.address)), 125);
-        assert.equal(toEther(await pool.pendingRewards(bob.address)), 375);
-
-        // save balances and rewards before withdrawl
-        const aliceOldBalance = toEther(
-            await ethers.provider.getBalance(alice.address)
-        );
-        const bobOldBalance = toEther(
-            await ethers.provider.getBalance(bob.address)
-        );
-        const alicePendingRewards = toEther(
-            await pool.pendingRewards(alice.address)
-        );
-        const bobPendingRewards = toEther(
-            await pool.pendingRewards(bob.address)
-        );
+        const alicePendingRewards = await pendingRewardsOf(pool, alice);
+        const bobPendingRewards = await pendingRewardsOf(pool, bob);
+        // save users rewards
+        assert.equal(alicePendingRewards, 125);
+        assert.equal(bobPendingRewards, 375);
 
         await pool.connect(alice).withdrawPendingRewards();
         // verify event emittance and its parameters
@@ -52,13 +50,10 @@ describe('ETHPool.withdrawPendingRewards', function () {
 
         // verify balances after withdrawl: equal to old blance + rewards
         assert.equal(
-            toEther(await ethers.provider.getBalance(alice.address)),
+            await getBalance(alice),
             aliceOldBalance + alicePendingRewards
         );
-        assert.equal(
-            toEther(await ethers.provider.getBalance(bob.address)),
-            bobOldBalance + bobPendingRewards
-        );
+        assert.equal(await getBalance(bob), bobOldBalance + bobPendingRewards);
 
         const aliceWithdrawls = await pool.usersWithdrawals(alice.address);
         const bobWithdrawls = await pool.usersWithdrawals(bob.address);
