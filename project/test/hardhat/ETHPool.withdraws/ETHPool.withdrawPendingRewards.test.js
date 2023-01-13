@@ -62,6 +62,16 @@ describe('ETHPool.withdrawPendingRewards', function () {
         assert.equal(bobWithdrawls.withdrawWeekIndex, currentWeek);
         assert.equal(toEther(aliceWithdrawls.amount), alicePendingRewards);
         assert.equal(toEther(bobWithdrawls.amount), bobPendingRewards);
+
+        assert.equal(
+            toEther(await pool.totalUsersDeposits()),
+            aliceDeposit + bobDeposit
+        );
+
+        assert.equal(
+            toEther(await pool.totalClaimedRewards()),
+            alicePendingRewards + bobPendingRewards
+        );
     });
 
     it('fails on: WITHDRAW_0', async function () {
