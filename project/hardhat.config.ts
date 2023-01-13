@@ -45,6 +45,7 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: {
+            goerli: process.env.ETHER_SCAN_KEY ?? '',
             bsc: process.env.BSC_SCAN_KEY ?? '',
             celo: process.env.CELO_SCAN_KEY ?? '', // mainnet
         },
