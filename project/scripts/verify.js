@@ -1,9 +1,9 @@
 const hre = require('hardhat');
 
-// npx hardhat run --network bscTest scripts/verify.js
+// npx hardhat run --network goerli scripts/verify.js
 async function main() {
     await hre.run('verify:verify', {
-        address: '0xF9C1b8AC4873117ABDB5e18d25B3f66CE8282397',
+        address: '0x7aC2a52959D780d6ADBE970f3e0B36F1642Ca470',
         // see: https://hardhat.org/hardhat-runner/plugins/nomiclabs-hardhat-etherscan#using-programmatically
         // constructorArguments: [],
     });
