@@ -23,7 +23,9 @@ describe('ETHPool.depositRewards', function () {
         );
 
         const snapshotRewards = await pool.snapshotRewards();
-        const snapshotDeposits = toEther(await pool.snapshotDeposits());
+        const snapshotTotalUsersDeposits = toEther(
+            await pool.snapshotTotalUsersDeposits()
+        );
 
         const weekCounter = await pool.weekCounter();
 
@@ -32,7 +34,7 @@ describe('ETHPool.depositRewards', function () {
         assert.equal(toEther(snapshotRewards.amount), 10);
         assert.equal(toEther(snapshotRewards.previousTotal), 0);
 
-        assert.equal(snapshotDeposits, 100);
+        assert.equal(snapshotTotalUsersDeposits, 100);
 
         assert.equal(toEther(await pool.totalRewards()), 10);
         assert.equal(

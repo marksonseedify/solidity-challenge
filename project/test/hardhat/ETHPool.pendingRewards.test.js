@@ -24,7 +24,7 @@ describe('ETHPool.pendingRewards', function () {
          * rewards deposited yet
          */
         assert.equal(
-            toEther(await pool.snapshotDeposits()),
+            toEther(await pool.snapshotTotalUsersDeposits()),
             toEther(await pool.totalUsersDeposits())
         );
 

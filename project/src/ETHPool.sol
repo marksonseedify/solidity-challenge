@@ -20,7 +20,7 @@ contract ETHPool is TeamManagement, Rewards, UserData {
 
         _depositRewards();
 
-        snapshotDeposits = totalUsersDeposits;
+        snapshotTotalUsersDeposits = totalUsersDeposits;
     }
 
     /**
@@ -33,13 +33,13 @@ contract ETHPool is TeamManagement, Rewards, UserData {
     function pendingRewards(
         address user
     ) public view override returns (uint256 rewards) {
-        require(snapshotDeposits > 0, "NO_USERS_DEPOSITS");
+        require(snapshotTotalUsersDeposits > 0, "NO_USERS_DEPOSITS");
 
         // Has the user deposited before the last weekly deposit from the team?
         if (usersDeposits[user].lastestTime < snapshotRewards.timestamp) {
             rewards =
                 (usersDeposits[user].total * totalRewards) /
-                snapshotDeposits;
+                snapshotTotalUsersDeposits;
         }
         /**
          * @dev With the deposit limitation of once a week this part is not
@@ -56,13 +56,13 @@ contract ETHPool is TeamManagement, Rewards, UserData {
         else {
             /** @dev Deduct last deposit of user from total deposit by user,
              * multiply by amount of rewards in contract before adding new
-             * rewards, divide by snapshotDeposits
+             * rewards, divide by snapshotTotalUsersDeposits
              */
             rewards =
                 ((usersDeposits[user].total -
                     usersDeposits[user].lastDeposit) *
                     snapshotRewards.previousTotal) /
-                snapshotDeposits;
+                snapshotTotalUsersDeposits;
         }
     }
 

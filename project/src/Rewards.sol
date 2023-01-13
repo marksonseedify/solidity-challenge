@@ -19,7 +19,7 @@ abstract contract Rewards {
     //////////////////////////////////////////////////////////////*/
     // all used on weekly rewards deposits
     SnapshotReward public snapshotRewards;
-    uint256 public snapshotDeposits;
+    uint256 public snapshotTotalUsersDeposits;
     uint16 public weekCounter; // up to: (2^16 weeks) / 52 = 1,260 years
 
     event RewardsDeposit(
