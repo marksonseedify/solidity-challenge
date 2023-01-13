@@ -10,7 +10,7 @@ before(async () => {
 });
 
 describe('ETHPool.depositRewards', function () {
-    it('depositRewards: owner deposits rewards and check RewardsDeposit(...) emittance', async function () {
+    it('lets owner deposits rewards and check RewardsDeposit(...) emittance', async function () {
         const ETHPool = await ethers.getContractFactory('ETHPool');
         const pool = await ETHPool.deploy();
         await pool.deployed();
@@ -27,13 +27,13 @@ describe('ETHPool.depositRewards', function () {
             'RewardsDeposit'
         );
 
-        const snapshot = await pool.snapshotRewards();
+        const snapshotRewards = await pool.snapshotRewards();
         const nextWeek = await pool.nextWeek();
 
         // verify pool.snapshotRewards parameters
-        expect(snapshot.timestamp).to.not.equal(0);
-        assert.equal(toEther(snapshot.amount), 10);
-        assert.equal(toEther(snapshot.lastTotal), 0);
+        expect(snapshotRewards.timestamp).to.not.equal(0);
+        assert.equal(toEther(snapshotRewards.amount), 10);
+        assert.equal(toEther(snapshotRewards.lastTotal), 0);
 
         assert.equal(toEther(await pool.totalRewards()), 10);
         assert.equal(
