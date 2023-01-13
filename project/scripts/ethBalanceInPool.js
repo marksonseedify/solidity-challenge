@@ -5,7 +5,7 @@ async function main() {
     const ethBalance = parseFloat(
         hre.ethers.utils.formatEther(
             await hre.ethers.provider.getBalance(
-                '0x000095E79eAC4d76aab57cB2c1f091d553b36ca0'
+                '0xF9C1b8AC4873117ABDB5e18d25B3f66CE8282397'
             )
         )
     );
