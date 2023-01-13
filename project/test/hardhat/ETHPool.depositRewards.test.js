@@ -47,4 +47,8 @@ describe('ETHPool.depositRewards', function () {
 
         assert.equal(nextWeek, 1);
     });
+
+    it.skip('reverts on Pool_OWNER_TEAM_ONLY', async function () {});
+
+    it.skip('reverts on REWARDS_ZERO', async function () {});
 });
