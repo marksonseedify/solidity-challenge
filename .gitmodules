@@ -1,0 +1,9 @@
+[submodule "project/lib/forge-std"]
+	path = project/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "project/lib/solmate"]
+	path = project/lib/solmate
+	url = https://github.com/rari-capital/solmate
+[submodule "project/lib/openzeppelin-contracts"]
+	path = project/lib/openzeppelin-contracts
+	url = https://github.com/Openzeppelin/openzeppelin-contracts
