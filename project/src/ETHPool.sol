@@ -11,7 +11,7 @@ import {UserData} from "./UserData.sol";
  *         the pool by the ETHPool team each week.
  */
 contract ETHPool is TeamManagement, Rewards, UserData {
-    function depositRewards() public payable onlyOwnerOrTeam {
+    function depositRewards() external payable onlyOwnerOrTeam {
         require(totalUsersDeposits > 0, "NO_USERS_DEPOSITS");
 
         _depositRewards();
