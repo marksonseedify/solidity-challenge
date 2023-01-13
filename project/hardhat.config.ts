@@ -24,6 +24,12 @@ function getRemappings() {
 
 const config: HardhatUserConfig = {
     networks: {
+        goerli: {
+            url: process.env.GOERLI_RPC_URL,
+            accounts: {
+                mnemonic: process.env.SEED,
+            },
+        },
         bsc: {
             url: 'https://bsc-dataseed.binance.org',
             accounts: {
