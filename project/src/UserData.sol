@@ -60,6 +60,8 @@ abstract contract UserData {
 
     /**
      * @notice Withdraw `amount`, which can be rewards or deposit & rewards.
+     * @dev For calculations simplicity, we authorize users to withdraw only
+     *      once a week.
      */
     function _withdraw(uint256 amount, uint16 week) internal {
         require(amount > 0, "WITHDRAW_0");
