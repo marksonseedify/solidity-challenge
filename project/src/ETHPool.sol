@@ -15,22 +15,6 @@ import {UserData} from "./UserData.sol";
 contract ETHPool is TeamManagement, Rewards, UserData {
     using Address for address payable;
 
-    struct Withdrawals {
-        uint256 amount;
-        uint256 lastWithdrawlTime;
-        // (2^16) / 52 = 1,260 years
-        uint16 weeklyDepositIndex;
-    }
-
-    /*//////////////////////////////////////////////////////////////
-                            EVENTS
-    //////////////////////////////////////////////////////////////*/
-    event Withdrawl(
-        address indexed user,
-        uint256 indexed amount,
-        uint256 indexed weeklyDepositIndex
-    );
-
     function depositRewards() public payable override onlyOwnerOrTeam {
         super.depositRewards();
         snapshotDeposits = totalUsersDeposits;
@@ -76,13 +60,4 @@ contract ETHPool is TeamManagement, Rewards, UserData {
                 snapshotDeposits;
         }
     }
-
-    /**
-     * @dev Withdraw pending rewards.
-    // re-entreency guard / check effects interaction pattern
-
-    /**
-     * @notice Withdraw all deposits and rewards simultaneously.
-     */
-    // re-entreency guard / check effects interaction pattern
 }

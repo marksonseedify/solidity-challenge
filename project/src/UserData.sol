@@ -8,14 +8,29 @@ abstract contract UserData {
         uint256 total;
     }
 
+    struct UserWithdrawal {
+        uint256 amount;
+        uint256 lastWithdrawlTime;
+        // (2^16) / 52 = 1,260 years
+        uint16 weeklyDepositIndex;
+    }
+
     /*//////////////////////////////////////////////////////////////
                             TRACK USER'S DATA
     //////////////////////////////////////////////////////////////*/
     mapping(address => UserDeposit) public usersDeposits;
-    // mapping(address => Withdrawals) public usersWithdrawals;
+    // mapping(address => UserWithdrawal) public usersWithdrawals;
     uint256 public totalUsersDeposits;
 
+    /*//////////////////////////////////////////////////////////////
+                            EVENTS
+    //////////////////////////////////////////////////////////////*/
     event UsersDeposit(address indexed user, uint256 indexed amount);
+    event Withdrawl(
+        address indexed user,
+        uint256 indexed amount,
+        uint256 indexed weeklyDepositIndex
+    );
 
     /**
      * @notice Users deposit ETH into the pool to earn rewards.
@@ -37,4 +52,13 @@ abstract contract UserData {
 
         emit UsersDeposit(msg.sender, msg.value);
     }
+
+    /**
+     * @dev Withdraw pending rewards.
+    // re-entreency guard / check effects interaction pattern
+
+    /**
+     * @notice Withdraw all deposits and rewards simultaneously.
+     */
+    // re-entreency guard / check effects interaction pattern
 }
