@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 
+import {Rewards} from "./Rewards.sol";
 import {TeamManagement} from "./TeamManagement.sol";
 
 /**
@@ -10,14 +11,8 @@ import {TeamManagement} from "./TeamManagement.sol";
  *         interest on a weekly basis. New rewards are deposited manually into
  *         the pool by the ETHPool team each week.
  */
-contract ETHPool is TeamManagement {
+contract ETHPool is TeamManagement, Rewards {
     using Address for address payable;
-
-    struct SnapshotReward {
-        uint256 timestamp;
-        uint256 amount;
-        uint256 lastTotal;
-    }
 
     struct UserDeposit {
         uint256 lastDeposit;
@@ -33,20 +28,6 @@ contract ETHPool is TeamManagement {
     }
 
     /*//////////////////////////////////////////////////////////////
-                            ETHPool TEAM
-    //////////////////////////////////////////////////////////////*/
-    uint256[] public weeklyRewardsDeposits;
-    uint256 public totalRewards;
-
-    /*//////////////////////////////////////////////////////////////
-                            SNAPSHOT
-    //////////////////////////////////////////////////////////////*/
-    // all used on weekly rewards deposits
-    SnapshotReward public snapshotRewards;
-    uint256 public snapshotDeposits;
-    uint16 public nextWeek; // up to: (2^16 weeks) / 52 = 1,260 years
-
-    /*//////////////////////////////////////////////////////////////
                             TRACK USER'S DATA
     //////////////////////////////////////////////////////////////*/
     mapping(address => UserDeposit) public usersDeposits;
@@ -56,11 +37,6 @@ contract ETHPool is TeamManagement {
     /*//////////////////////////////////////////////////////////////
                             EVENTS
     //////////////////////////////////////////////////////////////*/
-    event RewardsDeposit(
-        uint256 indexed amount,
-        uint256 timestamp,
-        address indexed user
-    );
     event UsersDeposit(address indexed user, uint256 indexed amount);
     event Withdrawl(
         address indexed user,
@@ -68,25 +44,9 @@ contract ETHPool is TeamManagement {
         uint256 indexed weeklyDepositIndex
     );
 
-    /**
-     * @notice Deposit ETH for rewards into the pool.
-     * @dev Only ETHPool team can deposit rewards.
-     */
-    function depositRewards() external payable onlyOwnerOrTeam {
-        require(msg.value > 0, "REWARDS_ZERO");
-
-        snapshotRewards.timestamp = block.timestamp;
-        snapshotRewards.amount = msg.value;
-        snapshotRewards.lastTotal = totalRewards;
-
+    function depositRewards() public payable override onlyOwnerOrTeam {
+        super.depositRewards();
         snapshotDeposits = totalUsersDeposits;
-
-        totalRewards += msg.value;
-        weeklyRewardsDeposits.push(msg.value);
-
-        ++nextWeek;
-
-        emit RewardsDeposit(msg.value, block.timestamp, msg.sender);
     }
 
     /**
@@ -119,7 +79,9 @@ contract ETHPool is TeamManagement {
       */
     function pendingRewards(
         address user
-    ) public view returns (uint256 pendingRewards) {}
+    ) public view override returns (uint256 pendingRewards) {
+        super.pendingRewards(user);
+    }
 
     /**
      * @notice Deposit ETH into the pool.
