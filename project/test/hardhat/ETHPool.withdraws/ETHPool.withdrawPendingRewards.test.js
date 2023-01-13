@@ -79,4 +79,19 @@ describe('ETHPool.withdrawPendingRewards', function () {
             pool.connect(alice).withdrawPendingRewards()
         ).to.be.revertedWith('NO_REWARDS_FOR_USER');
     });
+
+    it('fails on: WITHDRAW_ONCE_WEEK', async function () {
+        const ETHPool = await ethers.getContractFactory('ETHPool');
+        const pool = await ETHPool.deploy();
+        await pool.deployed();
+
+        await pool.connect(alice).userDeposit({ value: toWei('100') });
+
+        await pool.depositRewards({ value: toWei('500') });
+
+        await pool.connect(alice).withdrawPendingRewards();
+        await expect(
+            pool.connect(alice).withdrawPendingRewards()
+        ).to.be.revertedWith('WITHDRAW_ONCE_WEEK');
+    });
 });
