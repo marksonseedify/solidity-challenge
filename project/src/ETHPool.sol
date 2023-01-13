@@ -70,9 +70,17 @@ contract ETHPool is TeamManagement, Rewards, UserData {
      * @notice Withdraw all deposits and rewards simultaneously.
      */
     function withdrawAll() external {
-        _withdraw(
-            pendingRewards(msg.sender) + usersDeposits[msg.sender].total,
-            weekCounter
-        );
+        uint256 rewards = pendingRewards(msg.sender);
+        uint256 deposits = usersDeposits[msg.sender].total;
+
+        usersDeposits[msg.sender].lastDeposit = 0;
+        usersDeposits[msg.sender].lastestTime = 0;
+        usersDeposits[msg.sender].total = 0;
+
+        totalUsersDeposits -= deposits;
+        // totalRewards -= rewards; // this causes an issue, source of bug not found
+        totalClaimedRewards += rewards;
+
+        _withdraw(rewards + deposits, weekCounter);
     }
 }

@@ -13,6 +13,7 @@ abstract contract Rewards {
     //////////////////////////////////////////////////////////////*/
     uint256[] public weeklyRewardsDeposits;
     uint256 public totalRewards;
+    uint256 public totalClaimedRewards;
 
     /*//////////////////////////////////////////////////////////////
                             SNAPSHOT
