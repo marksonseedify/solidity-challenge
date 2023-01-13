@@ -56,5 +56,5 @@ abstract contract Rewards {
       */
     function pendingRewards(
         address user
-    ) public view virtual returns (uint256 pendingRewards) {}
+    ) external view virtual returns (uint256 pendingRewards);
 }
