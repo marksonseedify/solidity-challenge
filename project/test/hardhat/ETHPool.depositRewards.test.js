@@ -30,7 +30,7 @@ describe('ETHPool.depositRewards', function () {
         const snapshotRewards = await pool.snapshotRewards();
         const snapshotDeposits = toEther(await pool.snapshotDeposits());
 
-        const nextWeek = await pool.nextWeek();
+        const nextDepositWeek = await pool.nextDepositWeek();
 
         // verify pool.snapshotRewards parameters
         expect(snapshotRewards.timestamp).to.not.equal(0);
@@ -41,11 +41,11 @@ describe('ETHPool.depositRewards', function () {
 
         assert.equal(toEther(await pool.totalRewards()), 10);
         assert.equal(
-            toEther(await pool.weeklyRewardsDeposits(nextWeek - 1)),
+            toEther(await pool.weeklyRewardsDeposits(nextDepositWeek - 1)),
             10
         );
 
-        assert.equal(nextWeek, 1);
+        assert.equal(nextDepositWeek, 1);
     });
 
     it.skip('reverts on Pool_OWNER_TEAM_ONLY', async function () {});
