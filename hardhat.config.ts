@@ -42,12 +42,6 @@ const config: HardhatUserConfig = {
     ],
   },
   networks: {
-    hardhat: {
-      forking: {
-        url: `https://eth-mainnet.alchemyapi.io/v2/${alchemyapi}`,
-        blockNumber: 16283930,
-      },
-    },
     goerli: {
       accounts: [deployAccountKey],
       url: `https://eth-goerli.alchemyapi.io/v2/${alchemyapi}`,
